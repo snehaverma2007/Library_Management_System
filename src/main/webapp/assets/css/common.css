@@ -1,0 +1,621 @@
+@charset "UTF-8";
+/* =========================================================
+   common.css  |  Woody library theme
+   Part 1: tokens + base styles   Part 2: dashboard styles
+   Load this BEFORE auth.css
+   ========================================================= */
+
+:root {
+    /* Wood (walnut to oak) */
+    --wood-900: #2c1d14;
+    --wood-800: #3d2a1e;
+    --wood-700: #52392a;
+    --wood-600: #6b4a35;
+    --wood-500: #8a6244;
+    --wood-400: #a87c57;
+    --wood-300: #c9a37b;
+    --wood-200: #e3cdb0;
+    --wood-100: #f3e8d7;
+
+    /* Brass / gold (lamp light, book edges) */
+    --brass-700: #8a5a1a;
+    --brass-600: #a9741f;
+    --brass-500: #c9972c;
+    --brass-400: #dcae4a;
+    --brass-300: #ecd08e;
+
+    /* Library greens + book-spine reds */
+    --forest-700: #34503b;
+    --forest-600: #3f5d45;
+    --forest-500: #4b6b50;
+    --sage-200: #dfe8da;
+    --burgundy-700: #6e2f2c;
+    --burgundy-600: #7f3834;
+    --burgundy-500: #93443f;
+    --honey-700: #8c601b;
+    --honey-600: #a8761f;
+    --honey-500: #bd8a2c;
+
+    /* Paper + text */
+    --paper: #f6efe2;
+    --paper-deep: #efe4d0;
+    --surface: #fffaf1;
+    --field-bg: #fbf5e9;
+    --ink: #2f2118;
+    --text-body: #5a4535;
+    --text-soft: #8a7461;
+    --border: #e4d6bd;
+    --border-strong: #cfba98;
+
+    /* Shape + depth (shadows are warm brown, not grey) */
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --shadow-card:
+        0 1px 2px rgba(60, 38, 22, .10),
+        0 14px 30px -12px rgba(60, 38, 22, .35);
+    --shadow-badge:
+        0 12px 24px -8px rgba(30, 18, 10, .65);
+    --shadow-button:
+        0 12px 22px -10px rgba(44, 29, 20, .85);
+
+    /* Motion */
+    --ease: cubic-bezier(.2, .8, .2, 1);
+    --fast: .18s;
+    --base: .3s;
+
+    /* Type */
+    --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+
+    /* Reusable wood-grain overlay */
+    --grain:
+        repeating-linear-gradient(90deg,
+            rgba(255, 255, 255, .035) 0 2px, transparent 2px 9px),
+        repeating-linear-gradient(90deg,
+            rgba(0, 0, 0, .10) 0 1px, transparent 1px 27px);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    transition: color var(--fast) ease;
+}
+
+::selection {
+    background: var(--brass-300);
+    color: var(--wood-900);
+}
+
+:focus-visible {
+    outline: 3px solid rgba(201, 151, 44, .55);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+
+/* =========================================================
+   DASHBOARD  |  Layout and components (woody library theme)
+
+   1. Page
+   2. Top navbar (wood plank)
+   3. Sidebar (bookshelf panel)
+   4. Main content + headings
+   5. Statistics cards (book spines)
+   6. Table + badges
+   7. Responsive
+   ========================================================= */
+
+
+/* ---------- 1. Page ---------- */
+body {
+    min-height: 100vh;
+    color: var(--text-body);
+    background:
+        radial-gradient(700px 420px at 100% 0%, rgba(236, 208, 142, .35), transparent 70%),
+        radial-gradient(700px 420px at 0% 100%, rgba(201, 163, 123, .28), transparent 70%),
+        var(--paper);
+    background-attachment: fixed;
+}
+
+
+/* ---------- 2. Top navbar ---------- */
+.navbar {
+    height: 58px;
+    background:
+        var(--grain),
+        linear-gradient(180deg, var(--wood-600) 0%, var(--wood-800) 100%);
+    border-bottom: 3px solid var(--brass-500);
+    box-shadow: 0 10px 24px -12px rgba(44, 29, 20, .7);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: .02em;
+    color: var(--wood-100);
+    background: rgba(0, 0, 0, .18);
+}
+
+.navbar-brand i {
+    color: var(--brass-400);
+}
+
+.navbar-brand:hover {
+    color: #fff;
+}
+
+.navbar .text-white {
+    color: var(--wood-200) !important;
+    font-weight: 600;
+    font-size: .92rem;
+}
+
+.navbar .nav-link {
+    color: var(--wood-100);
+    font-weight: 600;
+    font-size: .92rem;
+    border-radius: var(--radius-sm);
+}
+
+.navbar .nav-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, .12);
+}
+
+.navbar .nav-link i {
+    color: var(--brass-400);
+}
+
+.navbar-toggler {
+    top: 9px;
+    right: 14px;
+    border: 1.5px solid rgba(236, 208, 142, .6);
+}
+
+
+/* ---------- 3. Sidebar ---------- */
+.sidebar {
+    background:
+        linear-gradient(180deg, #fbf4e6 0%, var(--paper-deep) 100%);
+    border-right: 1.5px solid var(--border-strong);
+    box-shadow: 10px 0 30px -22px rgba(60, 38, 22, .6);
+}
+
+.sidebar-sticky {
+    padding: 18px 12px;
+}
+
+.sidebar .nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+    padding: 11px 14px;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--text-body);
+    border-radius: var(--radius-sm);
+    transition: background var(--fast) ease, color var(--fast) ease, transform var(--fast) ease;
+}
+
+.sidebar .nav-link i {
+    font-size: 1.1rem;
+    color: var(--wood-400);
+    transition: color var(--fast) ease;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(201, 163, 123, .22);
+    color: var(--wood-800);
+    transform: translateX(3px);
+}
+
+.sidebar .nav-link:hover i {
+    color: var(--brass-600);
+}
+
+.sidebar .nav-link.active {
+    color: var(--wood-900);
+    background: linear-gradient(90deg, var(--wood-200), rgba(227, 205, 176, .35));
+    box-shadow: inset 4px 0 0 var(--brass-500);
+}
+
+.sidebar .nav-link.active i {
+    color: var(--brass-600);
+}
+
+
+/* ---------- 4. Main content + headings ---------- */
+main {
+    padding-bottom: 40px;
+}
+
+main .border-bottom {
+    border-color: var(--border-strong) !important;
+}
+
+main h1.h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--wood-800);
+}
+
+main h1.h2 i {
+    color: var(--brass-600);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0 16px;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--wood-800);
+}
+
+/* Little bookmark ribbon before the heading */
+.section-title::before {
+    content: "";
+    width: 12px;
+    height: 28px;
+    background: var(--burgundy-600);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+}
+
+
+/* ---------- 5. Statistics cards (book spines) ---------- */
+.stat-card {
+    position: relative;
+    min-height: 150px;
+    border: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform var(--base) var(--ease), box-shadow var(--base) ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 26px 44px -16px rgba(60, 38, 22, .55);
+}
+
+/* Spine of the "book": a dark band with two brass bands */
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    background:
+        linear-gradient(180deg,
+            transparent 0 14%, var(--brass-400) 14% 16%, transparent 16% 20%,
+            var(--brass-400) 20% 22%, transparent 22% 78%,
+            var(--brass-400) 78% 80%, transparent 80% 84%,
+            var(--brass-400) 84% 86%, transparent 86%),
+        rgba(0, 0, 0, .22);
+    pointer-events: none;
+}
+
+/* Soft shine in the corner */
+.stat-card::after {
+    content: "";
+    position: absolute;
+    right: -34px;
+    bottom: -44px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .10);
+    pointer-events: none;
+}
+
+.stat-card.primary { background: linear-gradient(135deg, var(--wood-600), var(--wood-800)); }
+.stat-card.warning { background: linear-gradient(135deg, var(--honey-500), var(--honey-700)); }
+.stat-card.success { background: linear-gradient(135deg, var(--forest-500), var(--forest-700)); }
+.stat-card.info    { background: linear-gradient(135deg, var(--burgundy-500), var(--burgundy-700)); }
+
+.stat-card .card-body {
+    position: relative;
+    z-index: 1;
+    padding: 22px 22px 22px 36px;     /* extra left room for the spine */
+}
+
+.stat-card .card-title {
+    margin-bottom: 12px;
+    font-size: .95rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+}
+
+.stat-card .card-text {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.stat-icon {
+    float: right;
+    font-size: 1.9rem;
+    opacity: .8;
+}
+
+/* Cream text on every card.
+   !important beats Bootstrap's .text-white utility on the same elements */
+.stat-card .card-title,
+.stat-card .card-text {
+    color: var(--wood-100) !important;
+}
+
+.stat-card .stat-icon {
+    color: var(--brass-300) !important;
+}
+
+
+/* ---------- 6. Table + badges ---------- */
+.table-container {
+    padding: 8px 8px 4px;
+    background: var(--surface);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.table-container .table {
+    margin-bottom: 0;
+    --bs-table-bg: transparent;
+    --bs-table-hover-bg: var(--wood-100);
+    color: var(--text-body);
+}
+
+.table thead th {
+    padding: 14px 16px;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--wood-100);
+    background: var(--wood-700);
+    border-bottom: 3px solid var(--brass-500);
+}
+
+.table thead th:first-child { border-top-left-radius: var(--radius-sm); }
+.table thead th:last-child  { border-top-right-radius: var(--radius-sm); }
+
+.table tbody td {
+    padding: 14px 16px;
+    font-weight: 500;
+    color: var(--ink);
+    border-color: var(--border);
+}
+
+.table code {
+    padding: 3px 8px;
+    font-size: .85rem;
+    color: var(--wood-700);
+    background: var(--wood-100);
+    border-radius: 8px;
+}
+
+/* Warm badges (override Bootstrap's solid bg-* colours) */
+.badge {
+    padding: .45em .8em;
+    font-weight: 700;
+    border-radius: 999px;
+}
+
+.badge.bg-primary { background-color: var(--wood-200) !important; color: var(--wood-800) !important; }
+.badge.bg-info    { background-color: #f1d9d4 !important;         color: var(--burgundy-700) !important; }
+.badge.bg-success { background-color: var(--sage-200) !important; color: var(--forest-700) !important; }
+.badge.bg-warning { background-color: #f7e6c2 !important;         color: var(--honey-700) !important; }
+
+
+/* ---------- 7. Responsive ---------- */
+@media (min-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+        padding: 58px 0 0;
+    }
+
+    .sidebar-sticky {
+        height: calc(100vh - 58px);
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        border-right: 0;
+        border-bottom: 1.5px solid var(--border-strong);
+    }
+}
+
+
+/* =========================================================
+   BOOKS PAGE  |  Page header, buttons, category badges, actions
+   ========================================================= */
+
+/* ---------- Page header with action button ---------- */
+.page-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px 0 14px;
+    margin-bottom: 22px;
+    border-bottom: 1.5px solid var(--border-strong);
+}
+
+.page-header.header-with-btn {
+    justify-content: space-between;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--wood-800);
+}
+
+.page-header h1 i {
+    color: var(--brass-600);
+}
+
+/* ---------- Primary action button ---------- */
+.btn-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    font-size: .92rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    color: var(--wood-100);
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--wood-500), var(--wood-800));
+    border: 0;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-button), inset 0 1px 0 rgba(255, 255, 255, .18);
+    transition: transform var(--fast) var(--ease), box-shadow var(--fast) ease, filter var(--fast) ease;
+}
+
+.btn-modern i {
+    color: var(--brass-300);
+}
+
+.btn-modern:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 16px 26px -10px rgba(44, 29, 20, .9), inset 0 -3px 0 var(--brass-500);
+}
+
+/* ---------- Category badges ---------- */
+.badge-modern {
+    background-color: var(--wood-200);
+    color: var(--wood-800);
+}
+
+.badge-fiction    { background-color: #f1d9d4; }   /* rose */
+.badge-technology { background-color: var(--sage-200); }
+.badge-history    { background-color: #f7e6c2; }   /* honey */
+.badge-science    { background-color: #dde6ea; }   /* slate */
+
+/* Category column (4th): brown text */
+.table tbody td:nth-child(4) .badge {
+    color: var(--wood-800) !important;
+}
+
+/* ---------- Row action buttons ---------- */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-right: 6px;
+    font-size: 1rem;
+    text-decoration: none;
+    background: var(--surface);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--fast) ease, color var(--fast) ease,
+                border-color var(--fast) ease, transform var(--fast) ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.action-btn.edit {
+    color: var(--brass-700);
+}
+
+.action-btn.edit:hover {
+    color: var(--wood-900);
+    background: #f7e6c2;
+    border-color: var(--brass-500);
+}
+
+.action-btn.delete {
+    color: var(--burgundy-600);
+}
+
+.action-btn.delete:hover {
+    color: #fff;
+    background: var(--burgundy-600);
+    border-color: var(--burgundy-600);
+}
+
+/* ---------- Alerts + empty state ---------- */
+.alert {
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: .92rem;
+}
+
+.alert-success {
+    color: var(--forest-700);
+    background: var(--sage-200);
+    border: 1.5px solid #c3d4bd;
+}
+
+.alert-danger {
+    color: var(--burgundy-700);
+    background: #fbe9e4;
+    border: 1.5px solid #efc9bf;
+}
+
+.empty-state {
+    padding: 48px 16px;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--text-soft);
+}
+
+.empty-state i {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 2.2rem;
+    color: var(--wood-300);
+}
